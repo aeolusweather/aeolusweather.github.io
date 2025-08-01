@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aeolus Weather Inc</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nata+Sans:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script>
+
+var metarIndex = 0;
+var innerMetarIndex = 0;
+
+// Typerwrite text content. Use a pipe to indicate the start of the second line "|".  
+var metarArray = [
+    "COMING SOON ...",
+    "AERIS-0001 011653Z 24007KT 10SM FEW010 BKN220 17/12 A3019 RMK AO2 SLP227 T01670122 $",
+    "AERIS-0001 011553Z 23006KT 10SM SCT008 BKN220 16/12 A3018 RMK AO2 SLP226 SCT008 V BKN T01560122 $",
+    "AERIS-0001 011519Z 21007KT 10SM SCT008 BKN220 16/12 A3018 RMK AO2 SCT008 V BKN T01560122 $",
+    "AERIS-0001 011453Z 20005KT 10SM BKN007 15/12 A3017 RMK AO2 SLP221 T01500122 53014 $",
+    "AERIS-0001 011353Z 21007KT 10SM BKN007 14/12 A3016 RMK AO2 SLP216 T01390122 $",
+    "AERIS-0001 011312Z 22007KT 10SM BKN007 14/12 A3014 RMK AO2 T01390122 $",
+    "AERIS-0001 011300Z 21006KT 10SM FEW007 FEW060 SCT160 SCT220 14/12 A3014 RMK AO2 T01390122 $",
+];
+
+// Speed (in milliseconds) of typing.
+var speedForward = 10, //Typing Speed
+    speedBetweenLines = 200, //Wait between first and second lines
+    speedBackspace = 25; //Backspace Speed
+
+//Run the loop
+window.onload = (event) => {
+    typeWriter("metar");
+}
+
+function typeWriter(id, ar) {
+    var container = document.getElementById(id);
+    var currentMetar = metarArray[metarIndex];
+    var currentPara = container.querySelector('.active');
+    
+    // If full string hasn't yet been typed out, continue typing
+    if (innerMetarIndex < currentMetar.length) {
+      
+        currentPara.textContent = currentPara.textContent + currentMetar.charAt(innerMetarIndex);
+        innerMetarIndex++;
+        setTimeout(function(){ typeWriter(id); }, speedForward);
+      
+    } else {
+        // full string has been typed, move on to the next one
+        setTimeout(function(){ typeWriterNextLine(id); }, speedBetweenLines);
+    }
+}
+
+function typeWriterNextLine(id) {
+    var container = document.getElementById(id);
+    var currentMetar = metarArray[metarIndex];
+    var currentPara = container.querySelector('.active');
+
+    innerMetarIndex = 0;
+    metarIndex += 1;
+    if (metarIndex >= metarArray.length) {
+        metarIndex = 0; // Reset to the first METAR if we reach the end
+    }
+    currentPara.classList.remove('active');
+    while (container.children.length >= metarArray.length) {
+        container.removeChild(container.lastChild);
+    }
+    newPara = document.createElement('p');
+    newPara.classList.add('active');
+    paraText = document.createTextNode('');
+    newPara.appendChild(paraText);
+    container.prepend(newPara);
+    setTimeout(function(){ typeWriter(id); }, speedForward);
+}
+  </script>
+  <style>
+    /* General Reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Nata Sans', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+    }
+
+    body {
+        width: 100%;
+        background-color: rgba(50, 73, 98, 0.7);
+    }
+
+    html {
+        background: url('./AERIS-AI.png') no-repeat center center/cover;
+        animation: fadeIn 1s ease-in-out 1s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    /* Main Container */
+    .container {
+      border-radius: 10px;
+      width: 92ch;
+    }
+
+    /* Title */
+    .title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 3rem;
+      color: #E6E6E6;
+      font-weight: bold;
+      letter-spacing: 0.5rem;
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Tagline */
+    .tagline {
+      font-size: 1.5rem;
+      color: #6EB6E1;
+      margin-top: 1em;
+      margin-bottom: 2em;
+      letter-spacing: 0.2em;
+    }
+
+    /* Typewriter Effect */
+    .typewriter {
+      text-align: left;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+      color: steelblue;
+      min-height: 14rem;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for readability */
+    }
+
+    .active {
+        color: cyan;
+    }
+
+    .active::after {
+        content:'';
+        display:inline-block;
+        margin-bottom:-3px;
+        margin-left:5px;
+        background-color:white;
+        animation-name:blinkcursor;
+        animation-duration:0.5s;
+        animation-iteration-count: infinite;
+    }
+
+    p.active::after {
+        height:16px;
+        width:9px;
+    }
+
+    @keyframes blinkcursor {
+        0% {
+            opacity:1;
+        }
+        49% {
+            opacity:1;
+        }
+        50% {
+            opacity:0;
+        }
+        100% {
+            opacity:0;
+        }
+    }
+
+    .bottom {
+        margin-top: auto;
+        /*background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for readability */
+        padding: 10px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2rem;
+      }
+      .tagline, .coming-soon {
+        font-size: 1.2rem;
+      }
+      .typewriter {
+        font-size: 0.6rem;
+      }
+      p.active::after {
+        height:13px;
+        width:7px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <hr/>
+    <div class="title">AEOLUS WEATHER</div>
+    <hr/>
+    <div class="tagline">WEATHER INTELLIGENCE FOR AUTONOMOUS SUVs</div>
+    <div class="typewriter" id="metar">
+        <p class="active"></p>
+    </div>
+    <div class="bottom">
+        <p>Copyright &copy; 2025 - AEOLUS WEATHER, INC.</p>
+    </div>
+  </div>
+</body>
+</html>
