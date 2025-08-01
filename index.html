@@ -30,8 +30,8 @@ var metarArray = [
 ];
 
 // Speed (in milliseconds) of typing.
-var speedForward = 10, //Typing Speed
-    speedBetweenLines = 200, //Wait between first and second lines
+var speedForward = 100, //Typing Speed
+    speedBetweenLines = 2000, //Wait between first and second lines
     speedBackspace = 25; //Backspace Speed
 
 //Run the loop
@@ -100,7 +100,7 @@ function typeWriterNextLine(id) {
 
     html {
         background: url('./AERIS-AI.png') no-repeat center center/cover;
-        animation: fadeIn 1s ease-in-out 1s;
+        animation: fadeIn 1s ease-in-out 0s;
         animation-fill-mode: forwards;
     }
 
